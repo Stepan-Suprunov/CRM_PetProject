@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import {FilterValuesType} from "./App";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string
@@ -23,9 +22,6 @@ type PropsType = {
 
 export function Todolist(props: PropsType) {
 
-    const [newTaskTitle, setNewTaskTitle] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
-
     const removeTodolist = () => props.removeTodolist(props.id);
 
     return (
@@ -33,32 +29,7 @@ export function Todolist(props: PropsType) {
             <h3>{props.title}
                 <button onClick={removeTodolist}>x</button>
             </h3>
-            <div>
-                <input
-                    className={error ? 'error' : ''}
-                    placeholder="Add New Task"
-                    value={newTaskTitle}
-                    onChange={(e) => setNewTaskTitle(e.target.value)}
-                    onKeyPress={(e) => {
-                        setError(null);
-                        if (e.key === 'Enter' && newTaskTitle.trim() !== '') {
-                            props.addTask(newTaskTitle.trim(), props.id);
-                            setNewTaskTitle('');
-                        }
-                    }}
-                />
-                <button onClick={() => {
-                    if (newTaskTitle.trim() !== '') {
-                        props.addTask(newTaskTitle.trim(), props.id);
-                        setNewTaskTitle('');
-                    } else {
-                        setError('Field is required')
-                    }
-                }}>
-                    +
-                </button>
-                {error && <div className='error-message'>{error}</div>}
-            </div>
+            <AddItemForm id={props.id} addTask={props.addTask} />
             <ul>
                 {props.tasks.map(task =>
                     <li key={task.id} className={task.isDone ? 'is-done' : ''}>
