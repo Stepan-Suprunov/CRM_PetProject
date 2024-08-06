@@ -1,8 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 
 type AddItemFormPropsType = {
-    addTask: (newTaskTitle: string, todolistId: string) => void;
-    id: string;
+    addItem: (newTaskTitle: string) => void;
 };
 
 export function AddItemForm(props: AddItemFormPropsType) {
@@ -21,7 +20,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
     };
     const addTask = () => {
         if (newTaskTitle.trim() !== '') {
-            props.addTask(newTaskTitle.trim(), props.id);
+            props.addItem(newTaskTitle.trim());
             setNewTaskTitle('');
         } else {
             setError('Field is required')
@@ -32,7 +31,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
         <div>
             <input
                 className={error ? 'error' : ''}
-                placeholder="Add New Task"
+                placeholder="Add New Item"
                 value={newTaskTitle}
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler}
