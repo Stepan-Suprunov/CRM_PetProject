@@ -68,7 +68,6 @@ function App() {
         tasksObj[todolistId] = filteredTasks;
         setTasksObj({...tasksObj});
     };
-
     function addTask(newTaskTitle: string, todolistId: string) {
         const task: TaskType = {
             id: v1(),
@@ -82,7 +81,6 @@ function App() {
 
         setTasksObj({...tasksObj});
     };
-
     function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(tl => tl.id === todolistId);
         if (todolist) {
@@ -90,7 +88,6 @@ function App() {
             setTodolists([...todolists]);
         };
     };
-
     function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
         let task = tasksObj[todolistId].find((t) => t.id === taskId);
         if (task) {
@@ -98,14 +95,19 @@ function App() {
             setTasksObj({...tasksObj});
         }
     };
-
     function removeTodolist(todolistId: string) {
         const filteredTodolists = todolists.filter(tl => tl.id !== todolistId);
         setTodolists(filteredTodolists);
         delete tasksObj[todolistId];
         setTasksObj({...tasksObj});
     };
-
+    function changeTodolistTitle(id: string, newTitle: string) {
+        const todolist = todolists.find(tl => tl.id === id);
+        if (todolist) {
+            todolist.title = newTitle;
+            setTodolists([...todolists]);
+        };
+    };
     function addTodolist(title: string) {
         let todolist: TodoListType = {
             id: v1(),
@@ -114,6 +116,13 @@ function App() {
         };
         setTodolists([todolist, ...todolists]);
         setTasksObj({...tasksObj, [todolist.id]: []});
+    };
+    function ChangeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
+        let task = tasksObj[todolistId].find((t) => t.id === taskId);
+        if (task) {
+            task.title = newTitle;
+            setTasksObj({...tasksObj});
+        }
     };
 
     return (
@@ -139,6 +148,8 @@ function App() {
                                      filter={tl.filter}
                                      addTask={addTask}
                                      changeTaskStatus={changeStatus}
+                                     onChangeTaskTitle={ChangeTaskTitle}
+                                     changeTodolistTitle={changeTodolistTitle}
                                      removeTodolist={removeTodolist}/>
                 })
             }
